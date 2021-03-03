@@ -7,10 +7,13 @@ ref: https://www.npmjs.com/package/canvas
 ref: https://stackoverflow.com/questions/31214724/gm-conversion-issue-in-node-js
 
 solution: install image magick
-
+# ubuntu
 sudo apt-get install graphicsmagick
 sudo apt-get install imagemagick
 
+# manjaro 
+pacman -S graphicsmagick
+pacman -S imagemagick
 安装库 (manjaro)
 - cairo
 - pango
