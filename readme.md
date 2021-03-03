@@ -3,6 +3,14 @@
 ### canvas 编译失败
 ref: https://www.npmjs.com/package/canvas
 
+### gm conversion issue in node.js. 
+ref: https://stackoverflow.com/questions/31214724/gm-conversion-issue-in-node-js
+
+solution: install image magick
+
+sudo apt-get install graphicsmagick
+sudo apt-get install imagemagick
+
 安装库 (manjaro)
 - cairo
 - pango
