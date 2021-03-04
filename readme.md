@@ -9,6 +9,9 @@ ref: https://stackoverflow.com/questions/31214724/gm-conversion-issue-in-node-js
 solution: install image magick
 # ubuntu
 sudo apt-get install graphicsmagick
+
+或者
+
 sudo apt-get install imagemagick
 
 # manjaro 
