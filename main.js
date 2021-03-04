@@ -25,6 +25,7 @@ const cb = (err, s) => {
 		console.error(err);
 		return 0;
 	}
+	console.log(s);
 	return s;
 }
 compareWithSsim(p1, p2, cb);
