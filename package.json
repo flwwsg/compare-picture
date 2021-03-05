@@ -11,9 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "bmp-js": "^0.1.0",
-    "image-type": "^4.1.0",
-    "ssim.js": "^3.5.0",
     "canvas": "^2.7.0",
-    "img-ssim": "^1.0.6"
+    "image-type": "^4.1.0",
+    "img-ssim": "^1.0.6",
+    "node-utils": "^1.0.1",
+    "ssim.js": "^3.5.0"
   }
 }
