@@ -31,12 +31,13 @@ function main() {
 	const go = function (i) {
 		if (i < allFiles.length -1) {
 			// go on
+			const srcFile = path.join(imageDir, allFiles[i]);
 			const cmp = function (start, j) {
 				if (j >= allFiles.length) {
 					// 下一循环
 					return go(start+1);
 				}
-				const srcFile = path.join(imageDir, allFiles[start]);
+				console.log('compare', start, j);
 				const targetFile = path.join(imageDir, allFiles[j]);
 				const cb = (srcFile, targetFile) => {
 					return (err, s) => {
@@ -58,11 +59,11 @@ function main() {
 						return cmp(start, j+1);
 					}
 				}
-				compareWithSsim(srcFile, targetFile, cb(srcFile, targetFile));
+				return compareWithSsim(srcFile, targetFile, cb(srcFile, targetFile));
 			}
 			cmp(i, i+1);
 		} else {
-			console.log('finish');
+			console.log('finish', i);
 		}
 	}
 	go(0);
