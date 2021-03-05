@@ -25,7 +25,7 @@ function compareWithSsim(p1, p2, cb) {
 const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
-const allFiles = fs.readdirSync(imageDir).slice(0, 1000);
+const allFiles = fs.readdirSync(imageDir).slice(0, 2);
 for (let i = 0; i < allFiles.length-1; i++) {
 	const srcFile = path.join(imageDir, allFiles[i]);
 	console.log('compare', srcFile);
