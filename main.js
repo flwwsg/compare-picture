@@ -65,6 +65,7 @@ function main() {
 			console.log('finish');
 		}
 	}
+	go(0);
 	// for (let i = 0; i < allFiles.length-1; i++) {
 	// 	const srcFile = path.join(imageDir, allFiles[i]);
 	// 	console.log('compare', srcFile);
