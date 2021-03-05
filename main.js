@@ -95,8 +95,4 @@ function main() {
 	// }
 }
 
-main().then(res => {
-	console.log(res);
-}).catch(err => {
-	console.error(err);
-})
+main();
