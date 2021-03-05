@@ -28,6 +28,7 @@ mkDir(category);
 const allFiles = fs.readdirSync(imageDir).slice(0, 1000);
 for (let i = 0; i < allFiles.length-1; i++) {
 	const srcFile = path.join(imageDir, allFiles[i]);
+	console.log('compare', srcFile);
 	for (let j = i + 1; j < allFiles.length; j++) {
 		const targetFile = path.join(imageDir, allFiles[j]);
 		const cb = (srcFile, targetFile) => {
