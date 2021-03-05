@@ -5,8 +5,7 @@ const { fileExists, mkDir } = require('node-utils/files');
 
 let working = false;
 // compare with ssim.js
-function compareWithSsim(p1, p2, cb) {
-	working = true;
+async function compareWithSsim(p1, p2, cb) {
     imgSSIM(
 	    p1,
 	    p2,
@@ -36,7 +35,6 @@ for (let i = 0; i < allFiles.length-1; i++) {
 		const cb = (srcFile, targetFile) => {
 			return (err, s) => {
 				if (err) {
-					working = false;
 					console.error(err);
 					return 0;
 				}
@@ -51,12 +49,9 @@ for (let i = 0; i < allFiles.length-1; i++) {
 						fs.copyFileSync(srcFile, path.join(categoryDir, path.basename(srcFile)));
 					}
 				}
-				working = false;
 				return s;
 			}
 		}
-		while (working) {
-		}
-		compareWithSsim(srcFile, targetFile, cb(srcFile, targetFile));
+		await compareWithSsim(srcFile, targetFile, cb(srcFile, targetFile));
 	}
 }
