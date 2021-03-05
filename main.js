@@ -5,7 +5,6 @@ const { fileExists, mkDir } = require('node-utils/files');
 
 // compare with ssim.js
 function compareWithSsim(p1, p2, cb) {
-	console.log('compare', p1, p2);
     imgSSIM(
 	    p1,
 	    p2,
@@ -26,7 +25,7 @@ function compareWithSsim(p1, p2, cb) {
 const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
-const allFiles = fs.readdirSync(imageDir);
+const allFiles = fs.readdirSync(imageDir).slice(0, 1000);
 for (let i = 0; i < allFiles.length-1; i++) {
 	const srcFile = path.join(imageDir, allFiles[i]);
 	for (let j = i + 1; j < allFiles.length; j++) {
@@ -38,7 +37,7 @@ for (let i = 0; i < allFiles.length-1; i++) {
 					return 0;
 				}
 				console.log('similar degree', s);
-				if (s >= 0.9) {
+				if (s >= 0.5) {
 					const baseName = path.basename(srcFile, '.png');
 					const categoryDir = path.join(category, baseName);
 					mkDir(categoryDir);
@@ -48,6 +47,7 @@ for (let i = 0; i < allFiles.length-1; i++) {
 						fs.copyFileSync(srcFile, path.join(categoryDir, path.basename(srcFile)));
 					}
 				}
+				return s;
 			}
 		}
 		compareWithSsim(srcFile, targetFile, cb(srcFile, targetFile));
