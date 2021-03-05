@@ -5,6 +5,7 @@ const { fileExists, mkDir } = require('node-utils/files');
 
 // compare with ssim.js
 function compareWithSsim(p1, p2, cb) {
+	console.log('compare', p1, p2);
     imgSSIM(
 	    p1,
 	    p2,
@@ -26,7 +27,6 @@ const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
 const allFiles = fs.readdirSync(imageDir);
-console.log(allFiles);
 for (let i = 0; i < allFiles.length-1; i++) {
 	const srcFile = path.join(imageDir, allFiles[i]);
 	for (let j = i + 1; j < allFiles.length; j++) {
