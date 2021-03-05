@@ -46,7 +46,7 @@ function main() {
 							return cmp(start, j+1);
 						}
 						console.log('similar degree', s);
-						if (s >= 0.9) {
+						if (s >= 0.5) {
 							const baseName = path.basename(srcFile, '.png');
 							const categoryDir = path.join(category, baseName);
 							mkDir(categoryDir);
