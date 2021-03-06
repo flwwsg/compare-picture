@@ -32,7 +32,7 @@ let nextCount = 0;
 const concurrent = 2;
 function main() {
 	const go = function () {
-		console.log('nextCount', );
+		console.log('nextCount', nextCount);
 		if (nextCount % concurrent !== 0) {
 			// 不是最后一个完成的
 			nextCount++;
