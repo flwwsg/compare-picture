@@ -29,7 +29,7 @@ mkDir(category);
 const allFiles = fs.readdirSync(imageDir);
 let nextCount = 0;
 // 并发数
-const concurrent = 1000;
+const concurrent = allFiles.length;
 function main() {
 	const go = function () {
 		console.log('nextCount', nextCount);
