@@ -26,3 +26,12 @@ pacman -S imagemagick
 
 
 npm i node-pre-gyp
+
+### 测试
+20 png 4 cores
+
+first version: 150s
+ssim with cache version: 140.102s
+cut png size version: 41s
+multiple core version: 22s
+
