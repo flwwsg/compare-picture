@@ -26,10 +26,10 @@ function compareWithSsim(p1, p2, cb) {
 const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
-const allFiles = fs.readdirSync(imageDir);
+const allFiles = fs.readdirSync(imageDir).slice(0, 11);
 let nextCount = 0;
 // 并发数
-const concurrent = 1000;
+const concurrent = 10;
 function main() {
 	const go = function (i) {
 		if (nextCount % concurrent !== 0) {
@@ -55,7 +55,7 @@ function main() {
 								return cmp(start, j+1);
 							}
 							if (isNaN(s)) {
-								console.log('try', srcFile, targetFile);
+								console.log('try', start, j, srcFile, targetFile);
 								return cmp(start, j);
 							}
 							console.log('similar degree', s);
