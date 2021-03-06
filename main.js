@@ -116,6 +116,10 @@ function selectOneConcurrent() {
 			const srcFile = path.join(imageDir, allFiles[next]);
 			const cmp = next => {
 				for (let j = next + 1; j < next + maxPng + 1; j++) {
+					if (j > allFiles.length - 1 ){
+						// 坐等执行完
+						break;
+					}
 					const targetFile = path.join(imageDir, allFiles[j]);
 					const cb = (srcFile, targetFile, start, index) => {
 						return (err, s) => {
