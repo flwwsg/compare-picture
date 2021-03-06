@@ -1,5 +1,4 @@
 // const imgSSIM = require('img-ssim');
-ImageParser = require("image-parser")
 const imgSSIM = require('./mySSIM');
 const path = require('path');
 const fs = require("fs");
@@ -13,14 +12,6 @@ const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
 const allFiles = fs.readdirSync(imageDir);
-
-// loading all image
-const imageParser = {};
-for (const f of allFiles) {
-	const srcFile = path.join(imageDir, f);
-	imageParser[srcFile] = new ImageParser(srcFile);
-}
-
 // 手动调用内存
 function writeSnapshot() {
 	hd.writeSnapshot(path.join(path.join(__dirname, 'tmp'), Date.now().toString()+'.heapsnapshot'));
@@ -28,7 +19,6 @@ function writeSnapshot() {
 // compare with ssim.js
 function compareWithSsim(p1, p2, cb) {
     imgSSIM(
-    	imageParser,
 	    p1,
 	    p2,
 	    { enforceSameSize: false, resize: true },

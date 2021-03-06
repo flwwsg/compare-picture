@@ -1,7 +1,8 @@
 "use strict";
 
 const sameTime = require("same-time"),
-	ul = require("ul");
+	ul = require("ul"),
+	ImageParser = require("image-parser");
 
 /**
  * imgSsim
@@ -22,7 +23,7 @@ const sameTime = require("same-time"),
  * @param {Function} cb The callback function.
  */
 
-module.exports = function imgSsim(cache, source, target, options, cb) {
+module.exports = function imgSsim(source, target, options, cb) {
 	// console.log(cache);
 	if (typeof options === "function") {
 		cb = options;
@@ -44,8 +45,8 @@ module.exports = function imgSsim(cache, source, target, options, cb) {
 		K2 = options.K2,
 		luminance = options.luminance,
 		bitsPerComponent = options.bitsPerComponent;
-	source = cache[source];
-	target = cache[target];
+	source = new ImageParser(source);
+	target = new ImageParser(target);
 
 	sameTime([function (done) {
 		return source.parse(done);
@@ -155,7 +156,9 @@ module.exports = function imgSsim(cache, source, target, options, cb) {
 			}
 
 			_iterate(source, target, windowSize, luminance, iteration);
-
+			// 回收内存
+			source = null;
+			target = null;
 			cb(null, mssim / numWindows, mcs / numWindows);
 		}
 
