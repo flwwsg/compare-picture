@@ -100,6 +100,7 @@ const maxLoading = 250;
 // for 循环版
 function selectOneConcurrent() {
 	const modNum = parseInt(process.env['workIndex']);
+	let counter = 0;
 	const go = function (next) {
 		if (next === allFiles.length - 1) {
 			console.log('complete in', (Date.now() - startTime) / 1000);
@@ -109,6 +110,12 @@ function selectOneConcurrent() {
 		if (next % numCPUs !== modNum) {
 			return go(next + 1);
 		}
+		if (counter !== 0 || counter !== allFiles.length - next + numCPUs) {
+			return setTimeout( function () {
+				return go(next);
+			}, 1000);
+		}
+		counter = 0;
 		console.log('nextCount loop', next);
 		if (next < allFiles.length - 1) {
 			// go on
@@ -139,6 +146,7 @@ function selectOneConcurrent() {
 									}
 								}
 							}
+							counter++;
 							if (index === allFiles.length-1) {
 								return go(start+1);
 							} else if (nextCmp + maxLoading === index){
