@@ -107,7 +107,7 @@ function selectOneConcurrent() {
 		}
 		if (counter !== 0 && counter !== allFiles.length - next + numCPUs - 1) {
 			return setTimeout( function () {
-				console.log('counter ', counter, 'need', allFiles.length - next + numCPUs - 1,);
+				console.log('counter', counter, 'need', allFiles.length - next + numCPUs - 1,);
 				return go(next);
 			}, 1000);
 		}
