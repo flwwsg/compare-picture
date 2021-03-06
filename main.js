@@ -6,6 +6,7 @@ const fs = require("fs");
 const { fileExists, mkDir } = require('node-utils/files');
 const numCPUs = require('os').cpus().length;
 const cluster = require('cluster');
+// kill -USR2 <pid> 使用
 const hd = require('heapdump');
 
 const imageDir = path.join(__dirname, 'images');
@@ -20,7 +21,7 @@ for (const f of allFiles) {
 	imageParser[srcFile] = new ImageParser(srcFile);
 }
 
-// kill -USR2 <pid> 使用
+// 手动调用内存
 function writeSnapshot() {
 	hd.writeSnapshot(path.join(path.join(__dirname, 'tmp'), Date.now().toString()+'.heapsnapshot'));
 }
