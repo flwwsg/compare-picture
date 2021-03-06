@@ -39,7 +39,7 @@ function compareWithSsim(p1, p2, cb) {
 
 let nextCount = 0;
 // 并发数
-const concurrent = 2;
+const concurrent = 1;
 const start = Date.now();
 function main() {
 	const go = function () {
