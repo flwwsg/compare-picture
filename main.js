@@ -102,7 +102,6 @@ function selectOneConcurrent() {
 	let nextCount = 0;
 	const modNum = parseInt(process.env['workIndex']);
 	const go = function (next) {
-		console.log('nextCount', nextCount);
 		if (next === allFiles.length - 1) {
 			console.log('complete in', (Date.now() - startTime) / 1000);
 			process.exit(0);
@@ -111,6 +110,7 @@ function selectOneConcurrent() {
 		if (next % numCPUs !== modNum) {
 			return go(next + 1);
 		}
+		console.log('nextCount', nextCount);
 		if (next < allFiles.length - 1) {
 			// go on
 			const srcFile = path.join(imageDir, allFiles[next]);
