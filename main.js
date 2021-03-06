@@ -95,7 +95,7 @@ function selectOne() {
 }
 
 // 每次最多载入的图片
-const maxPng = 250;
+const maxLoading = 250;
 
 // for 循环版
 function selectOneConcurrent() {
@@ -114,7 +114,7 @@ function selectOneConcurrent() {
 			const srcFile = path.join(imageDir, allFiles[next]);
 			const cmp = nextCmp => {
 				let counter = 0;
-				for (let j = nextCmp + 1; j < nextCmp + maxPng + 1; j++) {
+				for (let j = nextCmp + 1; j < nextCmp + maxLoading + 1; j++) {
 					if (j > allFiles.length - 1 ){
 						// 坐等执行完
 						break;
@@ -142,7 +142,7 @@ function selectOneConcurrent() {
 							counter++;
 							if (index === allFiles.length-1) {
 								return go(start+1);
-							} else if (counter === maxPng){
+							} else if (counter === maxLoading){
 								// 最后一个，执行下一组
 								return cmp(index);
 							}
