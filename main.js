@@ -26,10 +26,10 @@ function compareWithSsim(p1, p2, cb) {
 const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
-const allFiles = fs.readdirSync(imageDir).slice(0, 5);
+const allFiles = fs.readdirSync(imageDir);
 let nextCount = 0;
 // 并发数
-const concurrent = 2;
+const concurrent = 1000;
 function main() {
 	const go = function () {
 		console.log('nextCount', nextCount);
