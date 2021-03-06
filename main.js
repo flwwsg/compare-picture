@@ -103,7 +103,8 @@ function selectOneConcurrent() {
 	const go = function (next) {
 		if (next === allFiles.length - 1) {
 			console.log('complete in', (Date.now() - startTime) / 1000);
-			process.exit(0);
+			// 不能退出，可能有其它协程未执行完
+			return;
 		}
 		if (next % numCPUs !== modNum) {
 			return go(next + 1);
