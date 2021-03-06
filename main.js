@@ -99,18 +99,16 @@ const maxPng = 250;
 
 // for 循环版
 function selectOneConcurrent() {
-	let nextCount = 0;
 	const modNum = parseInt(process.env['workIndex']);
 	const go = function (next) {
 		if (next === allFiles.length - 1) {
 			console.log('complete in', (Date.now() - startTime) / 1000);
 			process.exit(0);
 		}
-		nextCount ++;
 		if (next % numCPUs !== modNum) {
 			return go(next + 1);
 		}
-		console.log('nextCount', nextCount);
+		console.log('nextCount loop', next);
 		if (next < allFiles.length - 1) {
 			// go on
 			const srcFile = path.join(imageDir, allFiles[next]);
