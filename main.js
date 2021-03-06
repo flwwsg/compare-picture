@@ -1,4 +1,5 @@
-const imgSSIM = require('img-ssim');
+// const imgSSIM = require('img-ssim');
+const imgSSIM = require('./mySSIM');
 const path = require('path');
 const fs = require("fs");
 const { fileExists, mkDir } = require('node-utils/files');
@@ -26,13 +27,17 @@ function compareWithSsim(p1, p2, cb) {
 const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
-const allFiles = fs.readdirSync(imageDir);
+const allFiles = fs.readdirSync(imageDir).slice(0, 20);
 let nextCount = 0;
 // 并发数
 const concurrent = allFiles.length;
+const start = Date.now();
 function main() {
 	const go = function () {
 		console.log('nextCount', nextCount);
+		if (nextCount === allFiles.length - 1) {
+			console.log('complete in', (Date.now() - start) / 1000);
+		}
 		if (nextCount % concurrent !== 0) {
 			// 不是最后一个完成的
 			nextCount++;
@@ -56,8 +61,8 @@ function main() {
 								return cmp(start, j+1);
 							}
 							if (isNaN(s)) {
-								console.log('try', start, j, srcFile, targetFile);
-								return cmp(start, j);
+								console.log('skip', start, j, srcFile, targetFile);
+								return cmp(start, j+1);
 							}
 							console.log('similar degree', start, j, s);
 							if (s >= 0.7) {
