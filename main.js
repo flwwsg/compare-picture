@@ -1,13 +1,26 @@
 // const imgSSIM = require('img-ssim');
+ImageParser = require("image-parser")
 const imgSSIM = require('./mySSIM');
 const path = require('path');
 const fs = require("fs");
 const { fileExists, mkDir } = require('node-utils/files');
 
-let working = false;
+const imageDir = path.join(__dirname, 'images');
+const category = path.join(__dirname, 'category');
+mkDir(category);
+const allFiles = fs.readdirSync(imageDir).slice(0, 20);
+
+// loading all image
+const imageParser = {};
+for (const f of allFiles) {
+	const srcFile = path.join(imageDir, f);
+	imageParser[srcFile] = new ImageParser(srcFile);
+}
+
 // compare with ssim.js
 function compareWithSsim(p1, p2, cb) {
     imgSSIM(
+    	imageParser,
 	    p1,
 	    p2,
 	    { enforceSameSize: false, resize: true },
@@ -24,10 +37,6 @@ function compareWithSsim(p1, p2, cb) {
     );
 }
 
-const imageDir = path.join(__dirname, 'images');
-const category = path.join(__dirname, 'category');
-mkDir(category);
-const allFiles = fs.readdirSync(imageDir).slice(0, 20);
 let nextCount = 0;
 // 并发数
 const concurrent = allFiles.length;

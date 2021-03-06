@@ -1,7 +1,6 @@
 "use strict";
 
-var ImageParser = require("image-parser"),
-	sameTime = require("same-time"),
+const sameTime = require("same-time"),
 	ul = require("ul");
 
 /**
@@ -23,8 +22,7 @@ var ImageParser = require("image-parser"),
  * @param {Function} cb The callback function.
  */
 
-const cache = {};
-module.exports = function imgSsim(source, target, options, cb) {
+module.exports = function imgSsim(cache, source, target, options, cb) {
 	// console.log(cache);
 	if (typeof options === "function") {
 		cb = options;
@@ -46,24 +44,12 @@ module.exports = function imgSsim(source, target, options, cb) {
 		K2 = options.K2,
 		luminance = options.luminance,
 		bitsPerComponent = options.bitsPerComponent;
-	const sourcePath = source;
-	const targetPath = target;
-	source = new ImageParser(source);
-	target = new ImageParser(target);
+	source = cache[source];
+	target = cache[target];
 
 	sameTime([function (done) {
-		if (cache[sourcePath]) {
-			source = cache[sourcePath];
-			return source.parse(done);
-		}
-		cache[sourcePath] = source;
 		return source.parse(done);
 	}, function (done) {
-		if (cache[targetPath]) {
-			target = cache[targetPath];
-			return target.parse(done);
-		}
-		cache[targetPath] = target;
 		return target.parse(done);
 	}], function (err) {
 		if (err) {
