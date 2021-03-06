@@ -114,8 +114,8 @@ function selectOneConcurrent() {
 		if (next < allFiles.length - 1) {
 			// go on
 			const srcFile = path.join(imageDir, allFiles[next]);
-			const cmp = next => {
-				for (let j = next + 1; j < next + maxPng + 1; j++) {
+			const cmp = nextCmp => {
+				for (let j = nextCmp + 1; j < nextCmp + maxPng + 1; j++) {
 					if (j > allFiles.length - 1 ){
 						// 坐等执行完
 						break;
@@ -142,7 +142,7 @@ function selectOneConcurrent() {
 							}
 							if (index === allFiles.length-1) {
 								return go(start+1);
-							} else if (next + maxPng === index){
+							} else if (nextCmp + maxPng === index){
 								// 最后一个，执行下一组
 								return cmp(index);
 							}
