@@ -32,11 +32,11 @@ let nextCount = 0;
 const concurrent = 10;
 function main() {
 	const go = function (i) {
-		nextCount ++;
 		if (nextCount % concurrent !== 0) {
 			// 不是最后一个完成的
 			return;
 		}
+		nextCount ++;
 		for (let next = i; next < concurrent + i; next++) {
 			if (next < allFiles.length -1) {
 				// go on
