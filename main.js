@@ -1,5 +1,5 @@
-const imgSSIM = require('img-ssim');
-// const imgSSIM = require('./ssim');
+// const imgSSIM = require('img-ssim');
+const imgSSIM = require('./ssim');
 const path = require('path');
 const fs = require("fs");
 const { fileExists, mkDir } = require('node-utils/files');

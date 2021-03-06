@@ -10,8 +10,8 @@ const ul = require("ul");
  *
  * @name imgSsim
  * @function
- * @param {ImageParser} source The first image path (local path or url).
- * @param {ImageParser} target The second image path (local path or url).
+ * @param {Object} source The first image path (local path or url).
+ * @param {Object} target The second image path (local path or url).
  * @param {Object} options An object containing the following fields:
  *
  *  - `windowSize` (Number): The number of pixels of the image splits (default: `8`).
