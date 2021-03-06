@@ -26,12 +26,13 @@ function compareWithSsim(p1, p2, cb) {
 const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
-const allFiles = fs.readdirSync(imageDir).slice(0, 11);
+const allFiles = fs.readdirSync(imageDir).slice(0, 10);
 let nextCount = 0;
 // 并发数
-const concurrent = 10;
+const concurrent = 6;
 function main() {
 	const go = function (i) {
+		console.log('nextCount', nextCount);
 		if (nextCount % concurrent !== 0) {
 			// 不是最后一个完成的
 			return;
