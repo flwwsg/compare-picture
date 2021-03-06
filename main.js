@@ -29,7 +29,7 @@ mkDir(category);
 const allFiles = fs.readdirSync(imageDir);
 let nextCount = 0;
 // 并发数
-const concurrent = 100;
+const concurrent = 1000;
 function main() {
 	const go = function (i) {
 		if (nextCount % concurrent !== 0) {
@@ -53,6 +53,10 @@ function main() {
 							if (err) {
 								console.error(err);
 								return cmp(start, j+1);
+							}
+							if (isNaN(s)) {
+								console.log('try', srcFile, targetFile);
+								return cmp(start, j);
 							}
 							console.log('similar degree', s);
 							if (s >= 0.7) {
