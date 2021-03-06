@@ -27,24 +27,26 @@ const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
 const allFiles = fs.readdirSync(imageDir).slice(0, 5);
-// let nextCount = 0;
+let nextCount = 0;
 // 并发数
 const concurrent = 2;
 function main() {
-	const go = function (i) {
-		console.log('nextCount', i);
-		if (i % concurrent !== 0) {
+	const go = function () {
+		console.log('nextCount', );
+		if (nextCount % concurrent !== 0) {
 			// 不是最后一个完成的
+			nextCount++;
 			return;
 		}
-		for (let next = i; next < concurrent + i; next++) {
+		nextCount ++;
+		for (let next = nextCount - 1; next < concurrent + nextCount - 1; next++) {
 			if (next < allFiles.length -1) {
 				// go on
 				const srcFile = path.join(imageDir, allFiles[next]);
 				const cmp = function (start, j) {
 					if (j >= allFiles.length) {
 						// 下一循环
-						return go(start+1);
+						return go();
 					}
 					const targetFile = path.join(imageDir, allFiles[j]);
 					const cb = (srcFile, targetFile) => {
@@ -80,7 +82,7 @@ function main() {
 			}
 		}
 	}
-	go(0);
+	go();
 }
 
 main();
