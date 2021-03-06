@@ -8,7 +8,7 @@ const { fileExists, mkDir } = require('node-utils/files');
 const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
-const allFiles = fs.readdirSync(imageDir).slice(0, 20);
+const allFiles = fs.readdirSync(imageDir);
 
 // loading all image
 const imageParser = {};
@@ -39,7 +39,7 @@ function compareWithSsim(p1, p2, cb) {
 
 let nextCount = 0;
 // 并发数
-const concurrent = allFiles.length;
+const concurrent = 1000;
 const start = Date.now();
 function main() {
 	const go = function () {
