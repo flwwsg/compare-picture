@@ -35,6 +35,7 @@ function main() {
 		console.log('nextCount', nextCount);
 		if (nextCount % concurrent !== 0) {
 			// 不是最后一个完成的
+			nextCount ++;
 			return;
 		}
 		nextCount ++;
