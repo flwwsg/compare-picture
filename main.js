@@ -48,12 +48,11 @@ function main() {
 						// 下一循环
 						return go(start+1);
 					}
-					console.log('compare', start, j);
 					const targetFile = path.join(imageDir, allFiles[j]);
 					const cb = (srcFile, targetFile) => {
 						return (err, s) => {
 							if (err) {
-								console.error(err);
+								console.error('err', err);
 								return cmp(start, j+1);
 							}
 							if (isNaN(s)) {
