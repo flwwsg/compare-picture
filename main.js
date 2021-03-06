@@ -126,7 +126,7 @@ function selectOneConcurrent() {
 							} else if (isNaN(s)) {
 								console.log('skip', start, j, srcFile, targetFile);
 							} else {
-								// console.log('similar degree', start, index, s);
+								console.log('similar degree', start, index, s);
 								if (s >= 0.7) {
 									const baseName = path.basename(srcFile, '.png');
 									const categoryDir = path.join(category, baseName);
