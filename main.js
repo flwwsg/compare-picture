@@ -138,7 +138,8 @@ function selectOneConcurrent() {
 							}
 							if (index === allFiles.length-1) {
 								return go(start+1);
-							} else {
+							} else if (next + maxPng === index){
+								// 最后一个，执行下一组
 								return cmp(index);
 							}
 						}
