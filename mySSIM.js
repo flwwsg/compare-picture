@@ -160,12 +160,21 @@ module.exports = function imgSsim(cache, source, target, options, cb) {
 		}
 
 		if (options.resize) {
-			target.resize(source.width(), source.height(), function (err, target) {
-				if (err) {
-					return cb(err);
-				}
-				computeChanges(source, target);
-			});
+			if (target.width() > source.width()) {
+				target.resize(source.width(), source.height(), function (err, target) {
+					if (err) {
+						return cb(err);
+					}
+					computeChanges(source, target);
+				});
+			} else {
+				source.resize(target.width(), target.height(), function (err, source) {
+					if (err) {
+						return cb(err);
+					}
+					computeChanges(source, target);
+				});
+			}
 		} else {
 			computeChanges(source, target);
 		}
