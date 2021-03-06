@@ -6,6 +6,7 @@ const fs = require("fs");
 const { fileExists, mkDir } = require('node-utils/files');
 const numCPUs = require('os').cpus().length;
 const cluster = require('cluster');
+const hd = require('heapdump');
 
 const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
@@ -19,6 +20,10 @@ for (const f of allFiles) {
 	imageParser[srcFile] = new ImageParser(srcFile);
 }
 
+// kill -USR2 <pid> 使用
+function writeSnapshot() {
+	hd.writeSnapshot(path.join(path.join(__dirname, 'tmp'), Date.now().toString()+'.heapsnapshot'));
+}
 // compare with ssim.js
 function compareWithSsim(p1, p2, cb) {
     imgSSIM(
@@ -40,17 +45,6 @@ function compareWithSsim(p1, p2, cb) {
 }
 
 const start = Date.now();
-
-const step = Math.floor(allFiles.length / numCPUs);
-const stepList = [];
-for (let i = 0; i < numCPUs; i++) {
-	if (i+1 < numCPUs) {
-		stepList.push({ startPos: i*step, endPos: (i+1)*step });
-	} else {
-		// last one
-		stepList.push({ startPos: i*step, endPos: allFiles.length });
-	}
-}
 
 function selectOne() {
 	let nextCount = 0;
