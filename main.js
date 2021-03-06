@@ -102,11 +102,6 @@ function selectOneConcurrent() {
 	const modNum = parseInt(process.env['workIndex']);
 	let counter = 0;
 	const go = function (next) {
-		if (next === allFiles.length - 1) {
-			console.log('complete in', (Date.now() - startTime) / 1000);
-			// 不能退出，可能有其它协程未执行完
-			return;
-		}
 		if (next % numCPUs !== modNum) {
 			return go(next + 1);
 		}
@@ -161,7 +156,8 @@ function selectOneConcurrent() {
 			}
 			cmp(next);
 		} else {
-			console.log('finish', next);
+			console.log('complete in', (Date.now() - startTime) / 1000);
+			process.exit(0);
 		}
 	}
 	go(0);
