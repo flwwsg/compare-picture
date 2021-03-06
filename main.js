@@ -35,7 +35,7 @@ function compareWithSsim(p1, p2, cb) {
     );
 }
 
-const start = Date.now();
+const startTime = Date.now();
 
 // one by one
 function selectOne() {
@@ -44,7 +44,7 @@ function selectOne() {
 	const go = function (next) {
 		console.log('nextCount', nextCount);
 		if (next === allFiles.length) {
-			console.log('complete in', (Date.now() - start) / 1000);
+			console.log('complete in', (Date.now() - startTime) / 1000);
 			process.exit(0);
 		}
 		nextCount ++;
@@ -94,6 +94,9 @@ function selectOne() {
 	go(0);
 }
 
+// 每次最多载入的图片
+const maxPng = 500;
+
 // for 循环版
 function selectOneConcurrent() {
 	let nextCount = 0;
@@ -101,7 +104,7 @@ function selectOneConcurrent() {
 	const go = function (next) {
 		console.log('nextCount', nextCount);
 		if (next === allFiles.length - 1) {
-			console.log('complete in', (Date.now() - start) / 1000);
+			console.log('complete in', (Date.now() - startTime) / 1000);
 			process.exit(0);
 		}
 		nextCount ++;
@@ -111,34 +114,39 @@ function selectOneConcurrent() {
 		if (next < allFiles.length - 1) {
 			// go on
 			const srcFile = path.join(imageDir, allFiles[next]);
-			for (let j = next + 1; j < allFiles.length; j++) {
-				const targetFile = path.join(imageDir, allFiles[j]);
-				const cb = (srcFile, targetFile, start, index) => {
-					return (err, s) => {
-						if (err) {
-							console.error('err', err);
-						} else if (isNaN(s)) {
-							console.log('skip', start, j, srcFile, targetFile);
-						} else {
-							console.log('similar degree', start, index, s);
-							if (s >= 0.7) {
-								const baseName = path.basename(srcFile, '.png');
-								const categoryDir = path.join(category, baseName);
-								mkDir(categoryDir);
-								// 目标文件复制到 category 目录中
-								fs.copyFileSync(targetFile, path.join(categoryDir, path.basename(targetFile)));
-								if (!fileExists(path.join(categoryDir, path.basename(srcFile)))) {
-									fs.copyFileSync(srcFile, path.join(categoryDir, path.basename(srcFile)));
+			const cmp = next => {
+				for (let j = next + 1; j < next + maxPng + 1; j++) {
+					const targetFile = path.join(imageDir, allFiles[j]);
+					const cb = (srcFile, targetFile, start, index) => {
+						return (err, s) => {
+							if (err) {
+								console.error('err', err);
+							} else if (isNaN(s)) {
+								console.log('skip', start, j, srcFile, targetFile);
+							} else {
+								console.log('similar degree', start, index, s);
+								if (s >= 0.7) {
+									const baseName = path.basename(srcFile, '.png');
+									const categoryDir = path.join(category, baseName);
+									mkDir(categoryDir);
+									// 目标文件复制到 category 目录中
+									fs.copyFileSync(targetFile, path.join(categoryDir, path.basename(targetFile)));
+									if (!fileExists(path.join(categoryDir, path.basename(srcFile)))) {
+										fs.copyFileSync(srcFile, path.join(categoryDir, path.basename(srcFile)));
+									}
 								}
 							}
-						}
-						if (index === allFiles.length-1) {
-							return go(start+1);
+							if (index === allFiles.length-1) {
+								return go(start+1);
+							} else {
+								return cmp(index);
+							}
 						}
 					}
+					compareWithSsim(srcFile, targetFile, cb(srcFile, targetFile, next, j));
 				}
-				compareWithSsim(srcFile, targetFile, cb(srcFile, targetFile, next, j));
 			}
+			cmp(next);
 		} else {
 			console.log('finish', next);
 		}
