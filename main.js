@@ -37,6 +37,7 @@ function compareWithSsim(p1, p2, cb) {
 
 const start = Date.now();
 
+// one by one
 function selectOne() {
 	let nextCount = 0;
 	const modNum = parseInt(process.env['workIndex']);
@@ -93,6 +94,59 @@ function selectOne() {
 	go(0);
 }
 
+// for 循环版
+function selectOneConcurrent() {
+	let nextCount = 0;
+	const modNum = parseInt(process.env['workIndex']);
+	const go = function (next) {
+		console.log('nextCount', nextCount);
+		if (next === allFiles.length) {
+			console.log('complete in', (Date.now() - start) / 1000);
+			process.exit(0);
+		}
+		nextCount ++;
+		if (next % numCPUs !== modNum) {
+			return go(next + 1);
+		}
+		if (next < allFiles.length) {
+			// go on
+			const srcFile = path.join(imageDir, allFiles[next]);
+			for (let j = next + 1; j < allFiles.length; j++) {
+				const targetFile = path.join(imageDir, allFiles[j]);
+				const cb = (srcFile, targetFile, start, index) => {
+					return (err, s) => {
+						if (err) {
+							console.error('err', err);
+						} else if (isNaN(s)) {
+							console.log('skip', start, j, srcFile, targetFile);
+						} else {
+							console.log('similar degree', start, index);
+							if (s >= 0.7) {
+								const baseName = path.basename(srcFile, '.png');
+								const categoryDir = path.join(category, baseName);
+								mkDir(categoryDir);
+								// 目标文件复制到 category 目录中
+								fs.copyFileSync(targetFile, path.join(categoryDir, path.basename(targetFile)));
+								if (!fileExists(path.join(categoryDir, path.basename(srcFile)))) {
+									fs.copyFileSync(srcFile, path.join(categoryDir, path.basename(srcFile)));
+								}
+							}
+						}
+						if (index === allFiles.length-1) {
+							return go(start+1);
+						}
+					}
+				}
+				compareWithSsim(srcFile, targetFile, cb(srcFile, targetFile, next, j));
+			}
+		} else {
+			console.log('finish', next);
+		}
+	}
+	go(0);
+}
+
+
 
 if (cluster.isMaster) {
 	// Fork workers.
@@ -104,5 +158,6 @@ if (cluster.isMaster) {
 		console.log('worker ' + worker.process.pid + ' died');
 	});
 } else {
-	selectOne();
+	// selectOne();
+	selectOneConcurrent();
 }
