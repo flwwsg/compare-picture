@@ -1,5 +1,5 @@
-// const imgSSIM = require('img-ssim');
-const imgSSIM = require('./ssim');
+const imgSSIM = require('img-ssim');
+// const imgSSIM = require('./ssim');
 const path = require('path');
 const fs = require("fs");
 const { fileExists, mkDir } = require('node-utils/files');
@@ -14,9 +14,8 @@ const allFiles = fs.readdirSync(imageDir).slice(0, 10);
 const imageParser = {};
 for (const f of allFiles) {
 	const srcFile = path.join(imageDir, f);
-	const imgParse = new ImageParser(srcFile);
-	imgParse.parse();
-	imageParser[srcFile] = imgParse;
+	imageParser[srcFile] = new ImageParser(srcFile);
+	imageParser[srcFile].parse();
 }
 
 
