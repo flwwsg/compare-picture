@@ -95,7 +95,7 @@ function selectOne() {
 }
 
 // 每次最多载入的图片
-const maxPng = 500;
+const maxPng = 250;
 
 // for 循环版
 function selectOneConcurrent() {
