@@ -27,18 +27,16 @@ const imageDir = path.join(__dirname, 'images');
 const category = path.join(__dirname, 'category');
 mkDir(category);
 const allFiles = fs.readdirSync(imageDir).slice(0, 5);
-let nextCount = 0;
+// let nextCount = 0;
 // 并发数
 const concurrent = 2;
 function main() {
 	const go = function (i) {
-		console.log('nextCount', nextCount, i);
-		if (nextCount % concurrent !== 0) {
+		console.log('nextCount', i);
+		if (i % concurrent !== 0) {
 			// 不是最后一个完成的
-			nextCount ++;
 			return;
 		}
-		nextCount ++;
 		for (let next = i; next < concurrent + i; next++) {
 			if (next < allFiles.length -1) {
 				// go on
