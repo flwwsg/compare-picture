@@ -16,7 +16,7 @@
     "image-parser": "^1.2.8",
     "image-type": "^4.1.0",
     "img-ssim": "^1.0.6",
-    "node-utils": "^1.0.1",
+    "node-utils": "^1.0.2",
     "same-time": "^2.3.5",
     "ssim.js": "^3.5.0",
     "ul": "^5.2.15"

@@ -3,14 +3,15 @@ const imgSSIM = require('./mySSIM');
 const path = require('path');
 const fs = require("fs");
 const { fileExists, mkDir } = require('node-utils/files');
+const { categoryByImageSize } = require('./tools');
 const numCPUs = require('os').cpus().length;
 const cluster = require('cluster');
 // kill -USR2 <pid> 使用
 const hd = require('heapdump');
 
 const imageDir = path.join(__dirname, 'images');
-const category = path.join(__dirname, 'category');
-mkDir(category);
+const categoryDir = path.join(__dirname, 'category');
+mkDir(categoryDir);
 const allFiles = fs.readdirSync(imageDir);
 // 手动调用内存
 function writeSnapshot() {
@@ -73,7 +74,7 @@ function selectOne() {
 						console.log('similar degree', start, j, s);
 						if (s >= 0.7) {
 							const baseName = path.basename(srcFile, '.png');
-							const categoryDir = path.join(category, baseName);
+							const categoryDir = path.join(categoryDir, baseName);
 							mkDir(categoryDir);
 							// 目标文件复制到 category 目录中
 							fs.copyFileSync(targetFile, path.join(categoryDir, path.basename(targetFile)));
@@ -133,7 +134,7 @@ function selectOneConcurrent() {
 								console.log('similar degree', start, index, s);
 								if (s >= 0.7) {
 									const baseName = path.basename(srcFile, '.png');
-									const categoryDir = path.join(category, baseName);
+									const categoryDir = path.join(categoryDir, baseName);
 									mkDir(categoryDir);
 									// 目标文件复制到 category 目录中
 									fs.copyFileSync(targetFile, path.join(categoryDir, path.basename(targetFile)));
@@ -163,18 +164,32 @@ function selectOneConcurrent() {
 	go(0);
 }
 
+function runCluster() {
+	if (cluster.isMaster) {
+		// Fork workers.
+		for (let i = 0; i < numCPUs; i++) {
+			cluster.fork({ workIndex: i });
+		}
 
-
-if (cluster.isMaster) {
-	// Fork workers.
-	for (let i = 0; i < numCPUs; i++) {
-		cluster.fork({ workIndex: i });
+		cluster.on('exit', function(worker, code, signal) {
+			console.log('worker ' + worker.process.pid + ' died');
+		});
+	} else {
+		// selectOne();
+		selectOneConcurrent();
 	}
+}
 
-	cluster.on('exit', function(worker, code, signal) {
-		console.log('worker ' + worker.process.pid + ' died');
-	});
-} else {
-	// selectOne();
-	selectOneConcurrent();
+// 按图片大小分类
+function sortBySize() {
+	const res = categoryByImageSize(allFiles, imageDir);
+	mkDir(path.join(categoryDir, 'size'));
+	for (const k of Object.keys(res)) {
+		mkDir(path.join(categoryDir, 'size', k));
+		for (const f of res[k]){
+			if (!fileExists(path.join(categoryDir, 'size', k, f))) {
+				fs.copyFileSync(path.join(imageDir, f), path.join(categoryDir, 'size', k, f));
+			}
+		}
+	}
 }
