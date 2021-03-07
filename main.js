@@ -184,12 +184,15 @@ function runCluster() {
 function sortBySize() {
 	const res = categoryByImageSize(allFiles, imageDir);
 	mkDir(path.join(categoryDir, 'size'));
-	for (const k of Object.keys(res)) {
+	for (const k of Object.keys(res).sort()) {
 		mkDir(path.join(categoryDir, 'size', k));
 		for (const f of res[k]){
 			if (!fileExists(path.join(categoryDir, 'size', k, f))) {
 				fs.copyFileSync(path.join(imageDir, f), path.join(categoryDir, 'size', k, f));
 			}
 		}
+		console.log(k, 'size', res[k].length);
 	}
 }
+
+sortBySize();

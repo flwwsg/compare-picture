@@ -10,7 +10,7 @@ const categoryByImageSize = (allFiles, parentPath) => {
         const img = sizeOf(fullPath);
         allSize[f] = { width: img.width, height: img.height, category: false };
     }
-    const result = {};
+    const result = { others: []};
     for (let i = 0; i < allFiles.length; i++) {
         const f = allFiles[i];
         if (allSize[f].category) {
@@ -29,6 +29,9 @@ const categoryByImageSize = (allFiles, parentPath) => {
         }
         if (res.length > 1) {
             result[`${width}x${height}`] = res;
+        } else {
+            // 只有一张的
+            result.others.push(res[0]);
         }
     }
     return result;
